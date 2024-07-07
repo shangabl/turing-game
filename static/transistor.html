@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - Level 1: Transistors</title>
+    <link rel="stylesheet" href="styles.css">
+    </style>
+    <script type="module">
+        import init, { toggle_transistor } from "./pkg/transistor_game.js";
+
+        document.addEventListener("DOMContentLoaded", function() {
+        fetch("sidebar.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("sidebar-container").innerHTML = data;
+            });
+        });
+
+        async function run() {
+            await init();
+            const transistor = document.getElementById("transistor");
+            let on = false;
+            transistor.addEventListener("click", () => {
+                on = toggle_transistor(on);
+                transistor.classList.toggle("on", on);
+                transistor.textContent = on ? "ON" : "OFF";
+            });
+        }
+        run();
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>Transistor</h1>
+        <h3>What is a Transistor?</h3>
+        <p>A transistor is a semiconductor device used to amplify or switch electronic signals and electrical power. It is one of the basic building blocks of modern electronic devices. Transistors can act as a switch, turning a current on or off, or as an amplifier, increasing the strength of a weak current.</p>
+        <p>Transistors are made from semiconductor materials like silicon. They have at least three terminals for connection to an external circuit. A voltage or current applied to one pair of the transistor's terminals controls the current through another pair of terminals.</p>
+        <p>In digital circuits, transistors are used as switches. When they are "on," they allow current to flow, representing a binary "1." When they are "off," they stop the current, representing a binary "0."</p>
+        <p>Try turning the transistor on and off by clicking the block below:</p>
+        <div id="transistor" class="transistor">OFF</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OR Gate</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import init, {  toggle_transistor, or_gate } from "./pkg/transistor_game.js";
+
+        document.addEventListener("DOMContentLoaded", function() {
+        fetch("sidebar.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("sidebar-container").innerHTML = data;
+            });
+        });
+
+        async function run() {
+            console.log('Initializing WebAssembly module');
+            await init();
+            console.log('WebAssembly module initialized');
+
+            const input1 = document.getElementById("input1");
+            const input2 = document.getElementById("input2");
+            const output = document.getElementById("output");
+
+            console.log('Elements:', { input1, input2, output });
+
+            let state1 = false;
+            let state2 = false;
+
+            if (input1) {
+                input1.addEventListener("click", () => {
+                    console.log('Input 1 clicked');
+                    state1 = toggle_transistor(state1);
+                    input1.classList.toggle("on", state1);
+                    input1.textContent = state1 ? "ON" : "OFF";
+                    updateOutput();
+                });
+            } else {
+                console.error('input1 element not found');
+            }
+
+            if (input2) {
+                input2.addEventListener("click", () => {
+                    console.log('Input 2 clicked');
+                    state2 = toggle_transistor(state2);
+                    input2.classList.toggle("on", state2);
+                    input2.textContent = state2 ? "ON" : "OFF";
+                    updateOutput();
+                });
+            } else {
+                console.error('input2 element not found');
+            }
+
+            function updateOutput() {
+                const result = or_gate(state1, state2);
+                output.classList.toggle("on", result);
+                output.textContent = result ? "ON" : "OFF";
+                console.log(`Output updated: ${result}`);
+            }
+        }
+
+        run();
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>Level 3: OR Gate</h1>
+        <h3>What is an OR Gate?</h3>
+        <p>An OR gate is a basic digital logic gate that implements logical disjunction – it gives a true (1) output if at least one of the inputs is true. An OR gate is usually represented with a symbol that has multiple input lines and one output line.</p>
+        <p>The truth table for an OR gate with two inputs (A and B) is:</p>
+        <div id="input1" class="transistor">OFF</div>
+        <div id="input2" class="transistor">OFF</div>
+        <div>Output:</div>
+        <div id="output" class="transistor">OFF</div>
+    </div>
+</body>
+</html>

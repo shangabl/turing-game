@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - NOT Gate</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    </style>
+    <script type="module">
+        import init, { not_gate, toggle_transistor } from "./pkg/transistor_game.js";
+
+        document.addEventListener("DOMContentLoaded", function() {
+        fetch("sidebar.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("sidebar-container").innerHTML = data;
+            });
+        });
+
+        async function run() {
+            console.log('Initializing WebAssembly module');
+            await init();
+            console.log('WebAssembly module initialized');
+
+            const input = document.getElementById("input");
+            const output = document.getElementById("output");
+
+            console.log('Elements:', { input, output });
+
+            let state = false;
+            output.classList.toggle("on", not_gate(state));
+
+            if (input) {
+                input.addEventListener("click", () => {
+                    console.log('Input clicked');
+                    state = toggle_transistor(state);
+                    input.classList.toggle("on", state);
+                    input.textContent = state ? "ON" : "OFF";
+                    updateOutput();
+                });
+            } else {
+                console.error('input element not found');
+            }
+
+            function updateOutput() {
+                const result = not_gate(state);
+                output.classList.toggle("on", result);
+                output.textContent = result ? "ON" : "OFF";
+                console.log(`Output updated: ${result}`);
+            }
+        }
+
+        run();
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>NOT Gate</h1>
+        <h3>What is a NOT Gate?</h3>
+        <p>A NOT gate, also known as an inverter, is a basic digital logic gate that implements logical negation. It takes a single input and gives a true (1) output when the input is false (0), and a false (0) output when the input is true (1).</p>
+        <p>Try the NOT gate by toggling the input below. The output will turn on when the input is off, and vice versa:</p>
+        <div id="input" class="transistor">OFF</div>
+        <div>Output:</div>
+        <div id="output" class="transistor">ON</div>
+    </div>
+</body>
+</html>
