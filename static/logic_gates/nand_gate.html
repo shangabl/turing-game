@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Turing Game - XOR Gate</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Turing Game - NAND Gate</title>
+    <link rel="stylesheet" href="../styles.css">
     <script type="module">
-        import init, { xor_gate, toggle_transistor } from "./pkg/transistor_game.js";
+        import init, { nand_gate, toggle_transistor } from "../pkg/transistor_game.js";
 
         document.addEventListener("DOMContentLoaded", function() {
-        fetch("sidebar.html")
+        fetch("../sidebar.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("sidebar-container").innerHTML = data;
@@ -53,7 +53,7 @@
             }
 
             function updateOutput() {
-                const result = xor_gate(state1, state2);
+                const result = nand_gate(state1, state2);
                 output.classList.toggle("on", result);
                 output.textContent = result ? "ON" : "OFF";
                 console.log(`Output updated: ${result}`);
@@ -66,10 +66,10 @@
 <body>
     <div id="sidebar-container"></div>
     <div class="content">
-        <h1>XOR Gate</h1>
-        <h3>What is an XOR Gate?</h3>
-        <p>An XOR gate is a basic digital logic gate that implements logical exclusive OR – it gives a true (1) output when the number of true inputs is odd. For two inputs, it gives a true (1) output only when exactly one of the inputs is true (1).</p>
-        <p>Try the XOR gate by toggling the two inputs below. The output will turn on only if one of the inputs is on:</p>
+        <h1>NAND Gate</h1>
+        <h3>What is a NAND Gate?</h3>
+        <p>A NAND gate is a basic digital logic gate that implements logical NAND – it gives a true (1) output unless both inputs are true, in which case it gives a false (0) output. A NAND gate is usually represented with a symbol that has multiple input lines and one output line, with a small circle (representing negation) at the output.</p>
+        <p>Try the NAND gate by toggling the two inputs below. The output will turn on unless both inputs are on:</p>
         <div id="input1" class="transistor">OFF</div>
         <div id="input2" class="transistor">OFF</div>
         <div>Output:</div>

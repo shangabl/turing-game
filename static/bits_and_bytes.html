@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - Bits and Bytes</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("sidebar.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("sidebar-container").innerHTML = data;
+                });
+        });
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>Bits and Bytes</h1>
+        <h3>What are Bits and Bytes?</h3>
+        <p>A bit is the most basic unit of information in computing and digital communications, representing a state of either 0 or 1.</p>
+        <p>A byte is a group of 8 bits. It is the basic unit of data used to represent a character such as a letter, number, or symbol in the computer.</p>
+        <p>Here’s how binary numbers are represented in bytes:</p>
+        
+        <div class="circuit-diagram">
+            <div class="circuit-row">
+                <div class="byte">
+                    <div class="bit" id="bit7">0</div>
+                    <div class="bit" id="bit6">0</div>
+                    <div class="bit" id="bit5">0</div>
+                    <div class="bit" id="bit4">0</div>
+                    <div class="bit" id="bit3">0</div>
+                    <div class="bit" id="bit2">0</div>
+                    <div class="bit" id="bit1">0</div>
+                    <div class="bit" id="bit0">0</div>
+                </div>
+            </div>
+        </div>
+        <div>Output: <span id="output">0</span></div>
+    </div>
+    <script type="module">
+        import init, { set_bit } from "./pkg/transistor_game.js";
+
+        async function run() {
+            await init();
+
+            const bits = Array.from(document.querySelectorAll('.bit'));
+            const output = document.getElementById('output');
+
+            bits.forEach((bit, index) => {
+                bit.addEventListener('click', () => {
+                    bit.textContent = bit.textContent === '0' ? '1' : '0';
+                    bit.classList.toggle('on', bit.textContent === '1');
+                    updateOutput();
+                });
+            });
+
+            async function updateOutput() {
+                let result = 0;
+                for (let i = 0; i < bits.length; i++) {
+                    let index = 7 - i;
+                    if (bits[i].textContent === '1') {
+                        result += await set_bit(index);
+                    }
+                }
+                output.textContent = result;
+            }
+        }
+
+        run();
+    </script>
+</body>
+</html>

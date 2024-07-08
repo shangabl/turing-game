@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - 4-to-1 Multiplexer</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/sidebar.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("sidebar-container").innerHTML = data;
+                });
+        });
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>4-to-1 Multiplexer (MUX)</h1>
+        <h3>What is a 4-to-1 Multiplexer?</h3>
+        <p>A 4-to-1 multiplexer is a digital switch that selects one of four input signals (D0, D1, D2, D3) based on the values of two select lines (S0, S1) and forwards the selected input to a single output (Y).</p>
+        
+        <div class="circuit-diagram">
+            <div class="circuit-row">
+                <span class="gate-label">D0</span>
+                <div id="d0" class="transistor">0</div>
+                <span class="gate-label">D1</span>
+                <div id="d1" class="transistor">0</div>
+                <span class="gate-label">D2</span>
+                <div id="d2" class="transistor">0</div>
+                <span class="gate-label">D3</span>
+                <div id="d3" class="transistor">0</div>
+            </div>
+            <div class="circuit-row">
+                <span class="gate-label">S0</span>
+                <div id="s0" class="transistor">0</div>
+                <span class="gate-label">S1</span>
+                <div id="s1" class="transistor">0</div>
+            </div>
+            <div class="circuit-row">
+                <span class="gate-label">Output (Y)</span>
+                <div id="output" class="transistor">D0</div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import init, { full_adder, and_gate, or_gate } from "/pkg/transistor_game.js";
+
+        async function run() {
+            await init();
+
+            const d0 = document.getElementById("d0");
+            const d1 = document.getElementById("d1");
+            const d2 = document.getElementById("d2");
+            const d3 = document.getElementById("d3");
+            const s0 = document.getElementById("s0");
+            const s1 = document.getElementById("s1");
+            const output = document.getElementById("output");
+
+            const inputs = [d0, d1, d2, d3, s0, s1];
+
+            inputs.forEach(input => {
+                input.addEventListener('click', () => {
+                    input.textContent = input.textContent === '0' ? '1' : '0';
+                    input.classList.toggle('on', input.textContent === '1');
+                    updateOutput();
+                });
+            });
+
+            function updateOutput() {
+                const d0Val = d0.textContent === '1';
+                const d1Val = d1.textContent === '1';
+                const d2Val = d2.textContent === '1';
+                const d3Val = d3.textContent === '1';
+                const s0Val = s0.textContent === '1';
+                const s1Val = s1.textContent === '1';
+
+                let result;
+                let selectedInput;
+
+                if (!s1Val && !s0Val) {
+                    const { sum } = full_adder(d0Val, false, false); // Adding 0
+                    result = sum;
+                    selectedInput = "D0";
+                } else if (!s1Val && s0Val) {
+                    const { sum } = full_adder(d1Val, false, false); // Adding 0
+                    result = sum;
+                    selectedInput = "D1";
+                } else if (s1Val && !s0Val) {
+                    result = and_gate(d2Val, false); // AND with 0 (no effect)
+                    selectedInput = "D2";
+                } else {
+                    result = or_gate(d3Val, false); // OR with 0 (no effect)
+                    selectedInput = "D3";
+                }
+
+                output.textContent = selectedInput;
+                output.classList.toggle('on', result);
+            }
+
+            // Initial output
+            updateOutput();
+        }
+
+        run();
+    </script>
+</body>
+</html>

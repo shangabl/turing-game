@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Turing Game - NOR Gate</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Turing Game - XOR Gate</title>
+    <link rel="stylesheet" href="../styles.css">
     <script type="module">
-        import init, { nor_gate, toggle_transistor } from "./pkg/transistor_game.js";
+        import init, { xor_gate, toggle_transistor } from "../pkg/transistor_game.js";
 
         document.addEventListener("DOMContentLoaded", function() {
-        fetch("sidebar.html")
+        fetch("../sidebar.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("sidebar-container").innerHTML = data;
@@ -27,7 +27,6 @@
 
             let state1 = false;
             let state2 = false;
-            output.classList.toggle("on", nor_gate(state1, state2));
 
             if (input1) {
                 input1.addEventListener("click", () => {
@@ -54,7 +53,7 @@
             }
 
             function updateOutput() {
-                const result = nor_gate(state1, state2);
+                const result = xor_gate(state1, state2);
                 output.classList.toggle("on", result);
                 output.textContent = result ? "ON" : "OFF";
                 console.log(`Output updated: ${result}`);
@@ -67,14 +66,14 @@
 <body>
     <div id="sidebar-container"></div>
     <div class="content">
-        <h1>NOR Gate</h1>
-        <h3>What is a NOR Gate?</h3>
-        <p>A NOR gate is a basic digital logic gate that implements logical NOR – it gives a true (1) output only when both inputs are false (0). In other words, it gives a false (0) output if at least one of the inputs is true (1).</p>
-        <p>Try the NOR gate by toggling the two inputs below. The output will turn on only if both inputs are off:</p>
+        <h1>XOR Gate</h1>
+        <h3>What is an XOR Gate?</h3>
+        <p>An XOR gate is a basic digital logic gate that implements logical exclusive OR – it gives a true (1) output when the number of true inputs is odd. For two inputs, it gives a true (1) output only when exactly one of the inputs is true (1).</p>
+        <p>Try the XOR gate by toggling the two inputs below. The output will turn on only if one of the inputs is on:</p>
         <div id="input1" class="transistor">OFF</div>
         <div id="input2" class="transistor">OFF</div>
         <div>Output:</div>
-        <div id="output" class="transistor">ON</div>
+        <div id="output" class="transistor">OFF</div>
     </div>
 </body>
 </html>

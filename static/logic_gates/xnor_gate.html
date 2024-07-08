@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Turing Game - Level 2: AND Gate</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Turing Game - XNOR Gate</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+    </style>
     <script type="module">
-        import init, {  toggle_transistor, and_gate } from "./pkg/transistor_game.js";
+        import init, { xnor_gate, toggle_transistor } from "../pkg/transistor_game.js";
 
         document.addEventListener("DOMContentLoaded", function() {
-        fetch("sidebar.html")
+        fetch("../sidebar.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("sidebar-container").innerHTML = data;
@@ -27,6 +29,7 @@
 
             let state1 = false;
             let state2 = false;
+            output.classList.toggle("on", xnor_gate(state1, state2));
 
             if (input1) {
                 input1.addEventListener("click", () => {
@@ -53,7 +56,7 @@
             }
 
             function updateOutput() {
-                const result = and_gate(state1, state2);
+                const result = xnor_gate(state1, state2);
                 output.classList.toggle("on", result);
                 output.textContent = result ? "ON" : "OFF";
                 console.log(`Output updated: ${result}`);
@@ -66,14 +69,14 @@
 <body>
     <div id="sidebar-container"></div>
     <div class="content">
-        <h1>Level 2: AND Gate</h1>
-        <h3>What is an AND Gate?</h3>
-        <p>An AND gate is a basic digital logic gate that implements logical conjunction – it gives a true (1) output only when all the inputs are true. An AND gate is usually represented with a symbol that has multiple input lines and one output line.</p>
-        <p>Try the AND gate by toggling the two inputs below. The output will turn on only if both inputs are on:</p>
+        <h1>XNOR Gate</h1>
+        <h3>What is an XNOR Gate?</h3>
+        <p>An XNOR gate is a digital logic gate that performs logical equivalence. It gives a true (1) output when the number of true inputs is even. For two inputs, it gives a true (1) output when both inputs are the same (both true or both false).</p>
+        <p>Try the XNOR gate by toggling the two inputs below. The output will turn on if both inputs are the same:</p>
         <div id="input1" class="transistor">OFF</div>
         <div id="input2" class="transistor">OFF</div>
         <div>Output:</div>
-        <div id="output" class="transistor">OFF</div>
+        <div id="output" class="transistor">ON</div>
     </div>
 </body>
 </html>

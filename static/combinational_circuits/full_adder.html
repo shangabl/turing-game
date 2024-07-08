@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - Full Adder</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("../sidebar.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("sidebar-container").innerHTML = data;
+                });
+        });
+    </script>
+    <style>
+        .circuit-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .circuit-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .gate-label {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .gate {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>Full Adder</h1>
+        <h3>What is a Full Adder?</h3>
+        <p>A Full Adder is a combinational circuit that performs the addition of three single-bit binary numbers (A, B, and CarryIn). It has two outputs: Sum and CarryOut. The Sum represents the least significant bit of the addition result, while the CarryOut represents the carry-out bit to the next higher order bit.</p>
+        <p>The Full Adder uses multiple logic gates:</p>
+        <ul>
+            <li>Two XOR gates for the Sum</li>
+            <li>Two AND gates and one OR gate for the CarryOut</li>
+        </ul>
+        <p>Try the Full Adder by toggling the three inputs below. The intermediate results and final Sum and Carry outputs will update accordingly:</p>
+        
+        <div class="circuit-diagram">
+            <div class="circuit-row">
+                <div id="inputA" class="transistor">0</div>
+                <span class="gate-label">A</span>
+                <span class="gate-label">+</span>
+                <div id="inputB" class="transistor">0</div>
+                <span class="gate-label">B</span>
+                <span class="gate-label">+</span>
+                <div id="carryIn" class="transistor">0</div>
+                <span class="gate-label">Carry In</span>
+            </div>
+            <div class="circuit-row">
+                <div class="gate">
+                    <span class="gate-label">XOR1</span>
+                    <div id="xor1Result" class="transistor">0</div>
+                </div>
+                <span class="gate-label">Intermediate Sum</span>
+            </div>
+            <div class="circuit-row">
+                <div class="gate">
+                    <span class="gate-label">AND1</span>
+                    <div id="and1Result" class="transistor">0</div>
+                </div>
+                <span class="gate-label">Intermediate Carry</span>
+            </div>
+            <div class="circuit-row">
+                <div class="gate">
+                    <span class="gate-label">XOR2</span>
+                    <div id="xor2Result" class="transistor">0</div>
+                </div>
+                <span class="gate-label">Sum</span>
+            </div>
+            <div class="circuit-row">
+                <div class="gate">
+                    <span class="gate-label">AND2</span>
+                    <div id="and2Result" class="transistor">0</div>
+                </div>
+                <span class="gate-label">Carry Out 1</span>
+            </div>
+            <div class="circuit-row">
+                <div class="gate">
+                    <span class="gate-label">OR</span>
+                    <div id="orResult" class="transistor">0</div>
+                </div>
+                <span class="gate-label">Final Carry</span>
+            </div>
+            <div class="circuit-row">
+                <span class="gate-label">Final Sum:</span>
+                <div id="sum" class="transistor">0</div>
+                <span class="gate-label">Final Carry:</span>
+                <div id="carry" class="transistor">0</div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import init, { xor_gate, and_gate, or_gate, toggle_transistor } from "../pkg/transistor_game.js";
+
+        async function run() {
+            console.log('Initializing WebAssembly module');
+            await init();
+            console.log('WebAssembly module initialized');
+
+            const inputA = document.getElementById("inputA");
+            const inputB = document.getElementById("inputB");
+            const carryIn = document.getElementById("carryIn");
+            const xor1Result = document.getElementById("xor1Result");
+            const and1Result = document.getElementById("and1Result");
+            const xor2Result = document.getElementById("xor2Result");
+            const and2Result = document.getElementById("and2Result");
+            const orResult = document.getElementById("orResult");
+            const sum = document.getElementById("sum");
+            const carry = document.getElementById("carry");
+
+            console.log('Elements:', { inputA, inputB, carryIn, xor1Result, and1Result, xor2Result, and2Result, orResult, sum, carry });
+
+            let stateA = false;
+            let stateB = false;
+            let stateCarryIn = false;
+
+            function updateOutput() {
+                const xor1Res = xor_gate(stateA, stateB);
+                const and1Res = and_gate(stateA, stateB);
+                const xor2Res = xor_gate(xor1Res, stateCarryIn);
+                const and2Res = and_gate(xor1Res, stateCarryIn);
+                const orRes = or_gate(and1Res, and2Res);
+
+                xor1Result.classList.toggle("on", xor1Res);
+                xor1Result.textContent = xor1Res ? "1" : "0";
+                and1Result.classList.toggle("on", and1Res);
+                and1Result.textContent = and1Res ? "1" : "0";
+
+                xor2Result.classList.toggle("on", xor2Res);
+                xor2Result.textContent = xor2Res ? "1" : "0";
+                and2Result.classList.toggle("on", and2Res);
+                and2Result.textContent = and2Res ? "1" : "0";
+                orResult.classList.toggle("on", orRes);
+                orResult.textContent = orRes ? "1" : "0";
+
+                sum.classList.toggle("on", xor2Res);
+                sum.textContent = xor2Res ? "1" : "0";
+                carry.classList.toggle("on", orRes);
+                carry.textContent = orRes ? "1" : "0";
+
+                console.log(`XOR1 Result updated: ${xor1Res}, AND1 Result updated: ${and1Res}, XOR2 Result updated: ${xor2Res}, AND2 Result updated: ${and2Res}, OR Result updated: ${orRes}`);
+            }
+
+            if (inputA) {
+                inputA.addEventListener("click", () => {
+                    console.log('Input A clicked');
+                    stateA = toggle_transistor(stateA);
+                    inputA.classList.toggle("on", stateA);
+                    inputA.textContent = stateA ? "1" : "0";
+                    updateOutput();
+                });
+            } else {
+                console.error('inputA element not found');
+            }
+
+            if (inputB) {
+                inputB.addEventListener("click", () => {
+                    console.log('Input B clicked');
+                    stateB = toggle_transistor(stateB);
+                    inputB.classList.toggle("on", stateB);
+                    inputB.textContent = stateB ? "1" : "0";
+                    updateOutput();
+                });
+            } else {
+                console.error('inputB element not found');
+            }
+
+            if (carryIn) {
+                carryIn.addEventListener("click", () => {
+                    console.log('Carry In clicked');
+                    stateCarryIn = toggle_transistor(stateCarryIn);
+                    carryIn.classList.toggle("on", stateCarryIn);
+                    carryIn.textContent = stateCarryIn ? "1" : "0";
+                    updateOutput();
+                });
+            } else {
+                console.error('carryIn element not found');
+            }
+        }
+
+        run();
+    </script>
+</body>
+</html>

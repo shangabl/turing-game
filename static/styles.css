@@ -57,3 +57,61 @@ body {
     background-color: green !important;
     color: yellow !important;
 }
+
+.circuit-diagram {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.circuit-row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.gate-label {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.gate-symbol {
+    width: 200px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid black;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.byte {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.bit {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.bit.on {
+    background-color: green;
+    color: yellow;
+}

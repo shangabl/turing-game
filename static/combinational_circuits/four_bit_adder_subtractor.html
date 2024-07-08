@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - 4-Bit Adder/Subtractor</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/sidebar.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("sidebar-container").innerHTML = data;
+                });
+        });
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>4-Bit Adder/Subtractor</h1>
+        <h3>What is a 4-Bit Adder/Subtractor?</h3>
+        <p>A 4-bit adder/subtractor is a digital circuit that can perform the addition or subtraction of two 4-bit binary numbers. It uses multiple full adders to add each pair of bits and propagate the carry to the next higher bit position. For subtraction, the bits of the second number are inverted and a 1 is added to the least significant bit to implement two's complement subtraction.</p>
+        <p>Try the 4-bit adder/subtractor by toggling the bits of the two input numbers below. The sum/difference and carry/borrow will be calculated and displayed:</p>
+        
+        <div class="circuit-diagram">
+            <div class="circuit-row">
+                <div class="byte">
+                    <div class="bit" id="a3">0</div>
+                    <div class="bit" id="a2">0</div>
+                    <div class="bit" id="a1">0</div>
+                    <div class="bit" id="a0">0</div>
+                </div>
+                <span class="gate-label">+</span>
+                <div class="byte">
+                    <div class="bit" id="b3">0</div>
+                    <div class="bit" id="b2">0</div>
+                    <div class="bit" id="b1">0</div>
+                    <div class="bit" id="b0">0</div>
+                </div>
+                <label>
+                    <input type="checkbox" id="subtract"> Subtract
+                </label>
+            </div>
+        </div>
+        
+        <div class="adder-steps">
+            <div class="step">
+                <h4>Adder 0 (LSB)</h4>
+                <p>This adder handles the least significant bits (LSB) of the two numbers, as well as the initial carry-in (which is 0 for the first adder).</p>
+                <div class="circuit-diagram">
+                    <div class="circuit-row">
+                        <span class="gate-label">A0</span>
+                        <div id="inputA0" class="transistor">0</div>
+                        <span class="gate-label">+</span>
+                        <span class="gate-label">B0</span>
+                        <div id="inputB0" class="transistor">0</div>
+                        <span class="gate-label">+ Carry In</span>
+                        <div id="carryIn0" class="transistor">0</div>
+                    </div>
+                    <div class="circuit-row">
+                        <span class="gate-label">Sum</span>
+                        <div id="sum0" class="transistor">0</div>
+                        <span class="gate-label">Carry Out</span>
+                        <div id="carryOut0" class="transistor">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <h4>Adder 1</h4>
+                <p>This adder handles the next bits of the two numbers (A1 and B1), along with the carry-out from the previous adder.</p>
+                <div class="circuit-diagram">
+                    <div class="circuit-row">
+                        <span class="gate-label">A1</span>
+                        <div id="inputA1" class="transistor">0</div>
+                        <span class="gate-label">+</span>
+                        <span class="gate-label">B1</span>
+                        <div id="inputB1" class="transistor">0</div>
+                        <span class="gate-label">+ Carry In</span>
+                        <div id="carryIn1" class="transistor">0</div>
+                    </div>
+                    <div class="circuit-row">
+                        <span class="gate-label">Sum</span>
+                        <div id="sum1" class="transistor">0</div>
+                        <span class="gate-label">Carry Out</span>
+                        <div id="carryOut1" class="transistor">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <h4>Adder 2</h4>
+                <p>This adder handles the next bits of the two numbers (A2 and B2), along with the carry-out from the previous adder.</p>
+                <div class="circuit-diagram">
+                    <div class="circuit-row">
+                        <span class="gate-label">A2</span>
+                        <div id="inputA2" class="transistor">0</div>
+                        <span class="gate-label">+</span>
+                        <span class="gate-label">B2</span>
+                        <div id="inputB2" class="transistor">0</div>
+                        <span class="gate-label">+ Carry In</span>
+                        <div id="carryIn2" class="transistor">0</div>
+                    </div>
+                    <div class="circuit-row">
+                        <span class="gate-label">Sum</span>
+                        <div id="sum2" class="transistor">0</div>
+                        <span class="gate-label">Carry Out</span>
+                        <div id="carryOut2" class="transistor">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <h4>Adder 3 (MSB)</h4>
+                <p>This adder handles the most significant bits (MSB) of the two numbers (A3 and B3), along with the carry-out from the previous adder.</p>
+                <div class="circuit-diagram">
+                    <div class="circuit-row">
+                        <span class="gate-label">A3</span>
+                        <div id="inputA3" class="transistor">0</div>
+                        <span class="gate-label">+</span>
+                        <span class="gate-label">B3</span>
+                        <div id="inputB3" class="transistor">0</div>
+                        <span class="gate-label">+ Carry In</span>
+                        <div id="carryIn3" class="transistor">0</div>
+                    </div>
+                    <div class="circuit-row">
+                        <span class="gate-label">Sum</span>
+                        <div id="sum3" class="transistor">0</div>
+                        <span class="gate-label">Carry Out</span>
+                        <div id="carryOut3" class="transistor">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-sum">
+            <h3>Final Sum/Difference</h3>
+            <div class="byte">
+                <div class="bit" id="finalSum3">0</div>
+                <div class="bit" id="finalSum2">0</div>
+                <div class="bit" id="finalSum1">0</div>
+                <div class="bit" id="finalSum0">0</div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import init, { full_adder } from "/pkg/transistor_game.js";
+
+        async function run() {
+            await init();
+
+            const bitsA = Array.from({ length: 4 }, (_, i) => document.getElementById(`a${i}`));
+            const bitsB = Array.from({ length: 4 }, (_, i) => document.getElementById(`b${i}`));
+            const inputsA = Array.from({ length: 4 }, (_, i) => document.getElementById(`inputA${i}`));
+            const inputsB = Array.from({ length: 4 }, (_, i) => document.getElementById(`inputB${i}`));
+            const sums = Array.from({ length: 4 }, (_, i) => document.getElementById(`sum${i}`));
+            const carryIns = Array.from({ length: 4 }, (_, i) => document.getElementById(`carryIn${i}`));
+            const carryOuts = Array.from({ length: 4 }, (_, i) => document.getElementById(`carryOut${i}`));
+            const finalSums = Array.from({ length: 4 }, (_, i) => document.getElementById(`finalSum${i}`));
+            const subtract = document.getElementById('subtract');
+
+            bitsA.forEach((bit, index) => {
+                bit.addEventListener('click', () => {
+                    bit.textContent = bit.textContent === '0' ? '1' : '0';
+                    bit.classList.toggle('on', bit.textContent === '1');
+                    inputsA[index].textContent = bit.textContent;
+                    inputsA[index].classList.toggle('on', bit.textContent === '1');
+                    updateOutput();
+                });
+            });
+
+            bitsB.forEach((bit, index) => {
+                bit.addEventListener('click', () => {
+                    bit.textContent = bit.textContent === '0' ? '1' : '0';
+                    bit.classList.toggle('on', bit.textContent === '1');
+                    inputsB[index].textContent = bit.textContent;
+                    inputsB[index].classList.toggle('on', bit.textContent === '1');
+                    updateOutput();
+                });
+            });
+
+            subtract.addEventListener('change', updateOutput);
+
+            async function updateOutput() {
+                let carryIn = subtract.checked ? 1 : 0;
+                for (let i = 0; i < 4; i++) {
+                    const a = bitsA[i].textContent === '1';
+                    let b = bitsB[i].textContent === '1';
+                    if (subtract.checked) {
+                        b = !b; // Invert the bit for subtraction
+                    }
+                    const result = full_adder(a, b, carryIn);
+                    const { sum, carry } = result;
+
+                    carryIns[i].textContent = carryIn ? '1' : '0';
+                    carryIns[i].classList.toggle('on', carryIn);
+                    
+                    sums[i].textContent = sum ? '1' : '0';
+                    sums[i].classList.toggle('on', sum);
+
+                    carryOuts[i].textContent = carry ? '1' : '0';
+                    carryOuts[i].classList.toggle('on', carry);
+
+                    carryIn = carry;
+                }
+                // Update the final sum display
+                for (let i = 0; i < 4; i++) {
+                    finalSums[i].textContent = sums[i].textContent;
+                    finalSums[i].classList.toggle('on', sums[i].textContent === '1');
+                }
+            }
+        }
+
+        run();
+    </script>
+</body>
+</html>

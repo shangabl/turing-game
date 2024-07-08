@@ -2,14 +2,14 @@
 <html>
 <head>
     <title>Turing Game - NOT Gate</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <style>
     </style>
     <script type="module">
-        import init, { not_gate, toggle_transistor } from "./pkg/transistor_game.js";
+        import init, { not_gate, toggle_transistor } from "../pkg/transistor_game.js";
 
         document.addEventListener("DOMContentLoaded", function() {
-        fetch("sidebar.html")
+        fetch("../sidebar.html")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("sidebar-container").innerHTML = data;

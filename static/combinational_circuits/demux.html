@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Turing Game - 1-to-4 Demultiplexer</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("/sidebar.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("sidebar-container").innerHTML = data;
+                });
+        });
+    </script>
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content">
+        <h1>1-to-4 Demultiplexer (DEMUX)</h1>
+        <h3>What is a 1-to-4 Demultiplexer?</h3>
+        <p>A 1-to-4 demultiplexer is a digital switch that takes a single input signal and routes it to one of four outputs (Y0, Y1, Y2, Y3) based on the values of two select lines (S0, S1).</p>
+        
+        <div class="circuit-diagram">
+            <div class="circuit-row">
+                <span class="gate-label">D</span>
+                <div id="d" class="transistor">0</div>
+            </div>
+            <div class="circuit-row">
+                <span class="gate-label">S0</span>
+                <div id="s0" class="transistor">0</div>
+                <span class="gate-label">S1</span>
+                <div id="s1" class="transistor">0</div>
+            </div>
+            <div class="circuit-row">
+                <span class="gate-label">Y0</span>
+                <div id="y0" class="transistor">0</div>
+                <span class="gate-label">Y1</span>
+                <div id="y1" class="transistor">0</div>
+                <span class="gate-label">Y2</span>
+                <div id="y2" class="transistor">0</div>
+                <span class="gate-label">Y3</span>
+                <div id="y3" class="transistor">0</div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import init, { and_gate, or_gate } from "/pkg/transistor_game.js";
+
+        async function run() {
+            await init();
+
+            const d = document.getElementById("d");
+            const s0 = document.getElementById("s0");
+            const s1 = document.getElementById("s1");
+            const y0 = document.getElementById("y0");
+            const y1 = document.getElementById("y1");
+            const y2 = document.getElementById("y2");
+            const y3 = document.getElementById("y3");
+
+            const inputs = [d, s0, s1];
+
+            inputs.forEach(input => {
+                input.addEventListener('click', () => {
+                    input.textContent = input.textContent === '0' ? '1' : '0';
+                    input.classList.toggle('on', input.textContent === '1');
+                    updateOutput();
+                });
+            });
+
+            function updateOutput() {
+                const dVal = d.textContent === '1';
+                const s0Val = s0.textContent === '1';
+                const s1Val = s1.textContent === '1';
+
+                y0.textContent = (dVal && !s1Val && !s0Val) ? '1' : '0';
+                y1.textContent = (dVal && !s1Val && s0Val) ? '1' : '0';
+                y2.textContent = (dVal && s1Val && !s0Val) ? '1' : '0';
+                y3.textContent = (dVal && s1Val && s0Val) ? '1' : '0';
+
+                y0.classList.toggle('on', y0.textContent === '1');
+                y1.classList.toggle('on', y1.textContent === '1');
+                y2.classList.toggle('on', y2.textContent === '1');
+                y3.classList.toggle('on', y3.textContent === '1');
+            }
+
+            // Initial output
+            updateOutput();
+        }
+
+        run();
+    </script>
+</body>
+</html>
